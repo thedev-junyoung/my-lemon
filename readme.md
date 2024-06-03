@@ -92,19 +92,22 @@
 ```bash
 cd backend && python3.9 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
 ```
+
 2. **Docker 컨테이너 실행**
 ```bash
 docker-compose up --build
 ```
+
 3. **FastAPI 서버 실행**
-Docker Compose가 모든 서비스를 시작하면 FastAPI 서버가 `http://localhost:8000`에서 실행됩니다.
-    
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
 
 #### 프론트엔드 설정 및 실행
 
 1. **프론트엔드 의존성 설치**
 ```bash
-cd frontend npm install
+cd frontend && npm install
 ```    
 2. **React 애플리케이션 실행**
 ```bash
