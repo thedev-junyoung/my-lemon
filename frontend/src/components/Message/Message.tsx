@@ -1,8 +1,6 @@
 import React from 'react';
-
-interface MessageProps {
-  text: string;
-}
+import './Message.css';
+import { MessageProps } from '../../types';
 
 const Message: React.FC<MessageProps> = ({ text }) => {
   return (

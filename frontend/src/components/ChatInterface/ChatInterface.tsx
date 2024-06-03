@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Message from './Message';
+import Message from '../Message/Message';
+import './ChatInterface.css';
 
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<string[]>(["오늘 당신에게 어떻게 도움을 줄까요?"]);

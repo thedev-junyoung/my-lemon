@@ -8,14 +8,13 @@ Hooks: useState 훅을 사용하여 컴포넌트의 상태를 관리합니다.
 */
 
 import React, { useState } from 'react';
+import './Sidebar.css';
+import { Categories } from '../../types';
+
 // React 함수형 컴포넌트 정의
 // 컴포넌트는 독립적인 UI 부분을 캡슐화하며 재사용이 가능합니다.
 const Sidebar: React.FC = () => {
-    // 인터페이스를 통해 객체의 구조를 정의하여 TypeScript가 타입을 체크할 수 있게 합니다.
-    // 이 인터페이스는 객체가 문자열 키에 대해 문자열 배열을 값으로 갖는 것을 명시합니다.
-    interface Categories {
-        [key: string]: string[];
-    }
+
     // 상태를 선언하고 초기값을 null로 설정합니다. 상태는 컴포넌트의 데이터를 관리합니다.
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
