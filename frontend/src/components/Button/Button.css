@@ -1,12 +1,38 @@
 .custom-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  .custom-button:hover {
-    background-color: #0056b3;
-  }
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.custom-button:hover {
+  background-color: #0056b3;
+}
+
+
+#send-button-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: inherit;
+  background-color: rgb(218, 218, 218);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding-right: 10px;
+}
+
+#send-button {
+  padding: 0 5px;
+  margin-left: 10px;
+  background: #ffffff;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  border-radius: 15px;
+}
+
+#send-button:hover {
+  opacity: 0.8;
+}
