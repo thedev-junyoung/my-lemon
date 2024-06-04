@@ -50,27 +50,41 @@
     ├── src
     │   ├── api
     │   │   └── userApi.ts
-    │   ├── components
-    │   │   ├── ChatInterface
-    │   │   │   ├── ChatInterface.tsx
-    │   │   │   └── ChatInterface.css
-    │   │   ├── Login
-    │   │   │   ├── Login.tsx
-    │   │   │   └── Login.css
-    │   │   ├── Message
-    │   │   │   ├── Message.tsx
-    │   │   │   └── Message.css
-    │   │   ├── Sidebar
-    │   │   │   ├── Sidebar.tsx
-    │   │   │   └── Sidebar.css
-    │   ├── models
-    │   │   ├── user.ts
-    │   ├── schemas
-    │   │   ├── user.ts
-    │   ├── types
-    │   │   └── index.ts
-    │   ├── utils
-    │   │   └── helpers.ts
+        ├── components
+        │   ├── Button
+        │   │   ├── Button.css
+        │   │   └── Button.tsx
+        │   ├── ChatContent
+        │   │   ├── ChatContent.css
+        │   │   └── ChatContent.tsx
+        │   ├── ChatInput
+        │   │   ├── ChatInput.css
+        │   │   └── ChatInput.tsx
+        │   ├── ChatInterface
+        │   │   ├── ChatInterface.css
+        │   │   └── ChatInterface.tsx
+        │   ├── Login
+        │   │   ├── Login.css
+        │   │   └── Login.tsx
+        │   ├── Message
+        │   │   ├── Message.css
+        │   │   └── Message.tsx
+        │   └── Sidebar
+        │       ├── Sidebar.css
+        │       └── Sidebar.tsx
+        ├── hooks
+        │   └── useChat.ts
+        ├── models            # 모델 정의 파일
+        ├── pages             # 페이지 컴포넌트
+        │   ├── Home
+        │   │   ├── Home.css
+        │   │   └── Home.tsx
+        │   └── Login
+        │       ├── Login.css
+        │       └── Login.tsx
+        ├── schemas           # 스키마 정의 파일
+        ├── types             # 타입 정의 파일
+        └── utils             # 유틸리티 함수
     │   ├── App.tsx
     │   ├── App.css
     │   ├── index.tsx
@@ -95,19 +109,34 @@
 
 ### 프론트엔드 구조
 
-- `src/api/userApi.ts`: 사용자 관련 API 통신 함수 정의
-- `src/components/ChatInterface`: 채팅 인터페이스 컴포넌트 및 스타일
-- `src/components/Login`: 로그인 폼 컴포넌트 및 스타일
-- `src/components/Message`: 메시지 컴포넌트 및 스타일
-- `src/components/Sidebar`: 사이드바 컴포넌트 및 스타일
-- `src/models/user.ts`: 프론트엔드에서 사용하는 사용자 모델 정의
-- `src/schemas/user.ts`: 사용자 Pydantic 스키마 정의 (백엔드와 일관성을 위해)
-- `src/types/index.ts`: 모든 타입 정의 파일
-- `src/utils/helpers.ts`: 유틸리티 함수
-- `src/App.tsx`: 메인 React 컴포넌트
-- `src/App.css`: 메인 React 컴포넌트 스타일
-- `src/index.tsx`: React 진입점
-- `src/index.css`: 전역 스타일
+#### 컴포넌트
+- `src/components`: 모든 React 컴포넌트를 포함하는 디렉토리입니다.
+    - `Button`: 버튼 컴포넌트 및 스타일 (Button.css, Button.tsx)
+    - `ChatContent`: 채팅 내용을 표시하는 컴포넌트 및 스타일 (ChatContent.css, ChatContent.tsx)
+    - `ChatInput`: 채팅 메시지를 입력하는 컴포넌트 및 스타일 (ChatInput.css, ChatInput.tsx)
+    - `Header`: 애플리케이션 헤더 컴포넌트 및 스타일 (Header.css, Header.tsx)
+    - `Login`: 로그인 폼 컴포넌트 및 스타일 (Login.css, Login.tsx)
+    - `Message`: 개별 채팅 메시지를 표시하는 컴포넌트 및 스타일 (Message.css, Message.tsx)
+    - `Sidebar`: 사이드바 컴포넌트 및 스타일 (Sidebar.css, Sidebar.tsx)
+- `src/App.tsx`: 메인 React 컴포넌트입니다.
+- `src/index.tsx`: React 애플리케이션의 진입점입니다.
+
+#### API
+- `src/api/userApi.ts`: 사용자 관련 API 통신 함수를 정의합니다.
+
+#### 모델 및 스키마
+- `src/models/user.ts`: 프론트엔드에서 사용하는 사용자 모델을 정의합니다.
+- `src/schemas/user.ts`: 사용자 Pydantic 스키마를 정의합니다 (백엔드와 일관성을 위해).
+
+#### 타입
+- `src/types/index.ts`: 모든 타입 정의를 포함하는 파일입니다.
+
+#### 유틸리티
+- `src/utils/helpers.ts`: 유틸리티 함수를 포함하는 파일입니다.
+
+#### 스타일
+- `src/App.css`: 메인 React 컴포넌트의 스타일을 정의합니다.
+- `src/index.css`: 전역 스타일을 정의합니다.
 
 ### 설정 및 실행
 
