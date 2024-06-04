@@ -15,3 +15,14 @@ export interface User {
   email: string;
   password?: string; // 생성 및 업데이트 시에만 사용
 }
+
+export interface ChatInputProps {
+  input: string;
+  setInput: (input: string) => void;
+  sendMessage: () => void;
+}
+
+export interface ButtonProps {
+  label: string;
+  onClick: () => void;
+}

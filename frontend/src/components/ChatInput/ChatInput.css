@@ -1,0 +1,16 @@
+#chat-footer {
+  display: flex;
+  padding: 1rem;
+  background: #252525;
+
+}
+
+#chat-input {
+  flex: 1;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+#send-button {
+  padding: 0.5rem 1rem;
+}
