@@ -60,9 +60,6 @@
         │   ├── ChatInput
         │   │   ├── ChatInput.css
         │   │   └── ChatInput.tsx
-        │   ├── ChatInterface
-        │   │   ├── ChatInterface.css
-        │   │   └── ChatInterface.tsx
         │   ├── Login
         │   │   ├── Login.css
         │   │   └── Login.tsx
