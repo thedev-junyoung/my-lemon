@@ -22,9 +22,6 @@ const Sidebar: React.FC<{ onMenuItemClick: (title: string) => void }> = ({ onMen
 
   return (
     <aside className="w-64 bg-[#303030] text-white p-5 flex flex-col justify-between">
-      <div className="logo mb-5">
-        <img src="/logo.png" alt="LEMON Logo" className="w-full h-auto" />
-      </div>
       <div className="input-group mb-4">
         <input
           className="form-control search-input text-white bg-[#333] border-none"
