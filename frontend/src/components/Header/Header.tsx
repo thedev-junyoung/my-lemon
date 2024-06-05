@@ -2,9 +2,9 @@ import React from 'react';
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-[#202020] text-white p-4 text-center">
-      <h1>들어오는 사용자에 따라 헤더표시</h1>
-    </header>
+      <div className="logo mb-5">
+        <img src="/logo.png" alt="LEMON Logo" className="w-100 h-200" />
+      </div>
   );
 };
 

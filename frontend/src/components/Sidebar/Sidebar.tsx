@@ -1,51 +1,47 @@
 import React, { useState } from 'react';
-import { sidebarData } from './SidebarData';
+import MainSidebar from './MainSidebar';
+import AdminSidebar from './AdminSidebar';
+import NewSidebar from './NewSidebar';
+import BottomMenu from './BottomMenu';
 
-interface MenuItemProps {
-  item: {
-    title: string;
-    subMenu?: MenuItemProps['item'][];
+const Sidebar: React.FC<{ onMenuItemClick: (title: string) => void }> = ({ onMenuItemClick }) => {
+  const [sidebarType, setSidebarType] = useState('main');
+
+  const renderSidebar = () => {
+    switch (sidebarType) {
+      case 'main':
+        return <MainSidebar onMenuItemClick={onMenuItemClick} />;
+      case 'admin':
+        return <AdminSidebar onMenuItemClick={onMenuItemClick} />;
+      case 'new':
+        return <NewSidebar onMenuItemClick={onMenuItemClick} />;
+      default:
+        return <MainSidebar onMenuItemClick={onMenuItemClick} />;
+    }
   };
-}
 
-const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="mb-2">
-      <div
-        className="cursor-pointer py-2 font-bold hover:bg-[stone-600]"
-        onClick={() => setOpen(!open)}
-      >
-        {item.title}
-      </div>
-      {open && item.subMenu && (
-        <div className="pl-4">
-          {item.subMenu.map((subItem, index) => (
-            <MenuItem key={index} item={subItem} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Sidebar: React.FC = () => {
   return (
     <aside className="w-64 bg-[#303030] text-white p-5 flex flex-col justify-between">
       <div className="logo mb-5">
         <img src="/logo.png" alt="LEMON Logo" className="w-full h-auto" />
       </div>
-      <div className="flex-grow overflow-y-auto">
-        {sidebarData.map((item, index) => (
-          <MenuItem key={index} item={item} />
-        ))}
+      <div className="input-group mb-4">
+        <input
+          className="form-control search-input text-white bg-[#333] border-none"
+          type="text"
+          placeholder="메뉴 검색"
+          onKeyUp={(e) => console.log('Search:', e.currentTarget.value)}
+        />
       </div>
-      <hr />
-      <div className="mt-3 mx-3 ">
-        <button className="w-full text-left py-2 hover:bg-stone-600">관리메뉴</button>
-        <button className="w-full text-left py-2 hover:bg-stone-600">로그인 관련</button>
-        <button className="w-full text-left py-2 hover:bg-stone-600">시스템 오류 제보</button>
+      <div className="flex-grow overflow-y-auto">
+        {renderSidebar()}
+      </div>
+      <hr className="my-3" />
+      <BottomMenu />
+      <div className="mt-3 flex space-x-2">
+        <button onClick={() => setSidebarType('main')}>Main</button>
+        <button onClick={() => setSidebarType('admin')}>Admin</button>
+        <button onClick={() => setSidebarType('new')}>New</button>
       </div>
     </aside>
   );

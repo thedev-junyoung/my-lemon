@@ -1,3 +1,4 @@
+// src/components/ChatInput/ChatInput.tsx
 import React, { useRef, useEffect } from 'react';
 import { ChatInputProps } from '../../types';
 import Button from '../Button/Button';
@@ -6,6 +7,7 @@ import Button from '../Button/Button';
 const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputAreaRef = useRef<HTMLDivElement>(null);
+
   // useEffect 훅을 사용하여 input 상태가 변경될 때마다 텍스트 영역의 높이를 조절
   useEffect(() => {
     if (textareaRef.current) {
@@ -18,7 +20,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) =
       }
     }
   }, [input]);
-  
+
   // handleKeyDown 함수: Enter 키를 누르면 메시지를 전송하고, Shift+Enter는 줄바꿈
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -47,7 +49,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) =
         />
         <Button label="send" onClick={sendMessage} />
       </div>
-      <div className="text-white text-center mt-2">Legal onster는 실수할 수 있습니다.   @LEMON</div>
+      <div className="text-white text-center mt-2">Legal onster는 실수할 수 있습니다. @LEMON</div>
     </div>
   );
 };
