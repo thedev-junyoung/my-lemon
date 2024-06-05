@@ -2,17 +2,15 @@ import React from 'react';
 import useChat from '../../hooks/useChat';
 import Message from '../Message/Message';
 import ChatInput from '../ChatInput/ChatInput';
-import './ChatContent.css';
+import Header from '../Header/Header';
 
 const ChatContent: React.FC = () => {
   const { messages, input, setInput, sendMessage } = useChat();
 
   return (
-    <div className="content">
-      <div id="chat-header">
-        <h1>** 접속한 유저의 Role 에 따른 헤더표시**</h1>
-      </div>
-      <div id="chat-history">
+    <div className="flex flex-col flex-1 bg-black text-white">
+      <Header/>
+      <div className="flex-1 p-4 overflow-y-auto">
         {messages.map((message, index) => (
           <Message key={index} text={message} />
         ))}

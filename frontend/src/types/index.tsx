@@ -25,4 +25,5 @@ export interface ChatInputProps {
 export interface ButtonProps {
   label: string;
   onClick: () => void;
+//  color?: string;  // 추가된 색깔 속성
 }
