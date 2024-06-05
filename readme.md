@@ -40,53 +40,61 @@
     ├── README.md
     ├── package-lock.json
     ├── package.json
+    ├── postcss.config.js
     ├── public
     │   ├── favicon.ico
     │   ├── index.html
+    │   ├── logo.png
     │   ├── logo192.png
     │   ├── logo512.png
     │   ├── manifest.json
     │   └── robots.txt
     ├── src
-    │   ├── api
-    │   │   └── userApi.ts
-        ├── components
-        │   ├── Button
-        │   │   ├── Button.css
-        │   │   └── Button.tsx
-        │   ├── ChatContent
-        │   │   ├── ChatContent.css
-        │   │   └── ChatContent.tsx
-        │   ├── ChatInput
-        │   │   ├── ChatInput.css
-        │   │   └── ChatInput.tsx
-        │   ├── Login
-        │   │   ├── Login.css
-        │   │   └── Login.tsx
-        │   ├── Message
-        │   │   ├── Message.css
-        │   │   └── Message.tsx
-        │   └── Sidebar
-        │       ├── Sidebar.css
-        │       └── Sidebar.tsx
-        ├── hooks
-        │   └── useChat.ts
-        ├── models            # 모델 정의 파일
-        ├── pages             # 페이지 컴포넌트
-        │   ├── Home
-        │   │   ├── Home.css
-        │   │   └── Home.tsx
-        │   └── Login
-        │       ├── Login.css
-        │       └── Login.tsx
-        ├── schemas           # 스키마 정의 파일
-        ├── types             # 타입 정의 파일
-        └── utils             # 유틸리티 함수
-    │   ├── App.tsx
     │   ├── App.css
-    │   ├── index.tsx
+    │   ├── App.tsx
+    │   ├── api
+    │   │   ├── axiosInstance.ts
+    │   │   ├── menuActions.tsx
+    │   │   └── mock.ts
+    │   ├── components
+    │   │   ├── Button
+    │   │   │   └── Button.tsx
+    │   │   ├── ChatContent
+    │   │   │   └── ChatContent.tsx
+    │   │   ├── ChatInput
+    │   │   │   └── ChatInput.tsx
+    │   │   ├── Header
+    │   │   │   └── Header.tsx
+    │   │   ├── Login
+    │   │   │   ├── Login.css
+    │   │   │   └── Login.tsx
+    │   │   ├── Message
+    │   │   │   └── Message.tsx
+    │   │   └── Sidebar
+    │   │       ├── AdminSidebar.tsx
+    │   │       ├── BottomMenu.tsx
+    │   │       ├── MainSidebar.tsx
+    │   │       ├── MenuItem.tsx
+    │   │       ├── NewSidebar.tsx
+    │   │       ├── Sidebar.tsx
+    │   │       └── SidebarData.ts
+    │   ├── hooks
+    │   │   ├── useChat.ts
+    │   │   └── useMenuHandler.ts
     │   ├── index.css
-    │   └── react-app-env.d.ts
+    │   ├── index.tsx
+    │   ├── models
+    │   ├── pages
+    │   │   ├── Home
+    │   │   │   ├── Home.css
+    │   │   │   └── Home.tsx
+    │   │   └── Login
+    │   │       └── Login.tsx
+    │   ├── react-app-env.d.ts
+    │   ├── schemas
+    │   ├── types
+    │   │   └── index.tsx
+    │   └── utils
     ├── tailwind.config.js
     └── tsconfig.json
 ```
@@ -121,13 +129,18 @@
 #### API
 - `src/api/userApi.ts`: 사용자 관련 API 통신 함수를 정의합니다.
 
+#### Hooks
+- `src/hooks/useChat.ts`: 채팅 관련 커스텀 훅
+- `src/hooks/useMenuHandler.ts`: 메뉴 클릭 핸들러 커스텀 훅
+
 #### 모델 및 스키마
 - `src/models/user.ts`: 프론트엔드에서 사용하는 사용자 모델을 정의합니다.
 - `src/schemas/user.ts`: 사용자 Pydantic 스키마를 정의합니다 (백엔드와 일관성을 위해).
 
 #### 타입
 - `src/types/index.ts`: 모든 타입 정의를 포함하는 파일입니다.
-
+- `src/api/menuActions.tsx`: 메뉴 관련 API 액션 정의
+- `src/api/mock.ts`: API 모킹 설정
 #### 유틸리티
 - `src/utils/helpers.ts`: 유틸리티 함수를 포함하는 파일입니다.
 
