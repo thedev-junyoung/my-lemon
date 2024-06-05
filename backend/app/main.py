@@ -27,9 +27,6 @@ async def lifespan(app: FastAPI):
     yield
     # 종료 시 수행할 작업이 있으면 여기에 추가
 
-
-
-
 # 데이터베이스 테이블 생성
 create_tables()
 
@@ -40,7 +37,9 @@ app.include_router(api_v1_router, prefix="/api/v1")
 def read_root():
     return {"message": "Hello, World!"}
 
-
+@app.get("/api/injury")
+def read_root():
+    return {"message": "Hello, World!"}
 
 # === build 패키징 ===================================================== //위의 '/' 엔드포인트 삭제 해야함. 
 """ from fastapi.staticfiles import StaticFiles
