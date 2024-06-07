@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { HeaderProps } from '../../types';
+import { useNavigate } from 'react-router-dom'; // React Router 훅
 
 
 // Header 컴포넌트: 사용자 정보를 표시하고 로그인/로그아웃 기능을 제공
 const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const { user, login, logout } = useAuth();
   const [logoSrc, setLogoSrc] = useState<string>('/logo/logo150x75.png');
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 기능 추가
 
   const updateLogoSrc = () => {
     if (window.innerWidth <= 768) {
@@ -57,9 +59,9 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
           </>
         ) : (
           <button
-            onClick={() => login('Sample User', 'user@example.com')}
-            className="p-2 bg-blue-600 text-white rounded"
-          >
+          onClick={() => navigate('/Login')} // Login 버튼 클릭 시 /Login 페이지로 이동
+          className="p-2 bg-blue-600 text-white rounded"
+        >
             Login
           </button>
         )}
