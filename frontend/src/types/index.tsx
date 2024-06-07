@@ -14,6 +14,7 @@ export interface User {
   username: string;
   email: string;
   password?: string; // 생성 및 업데이트 시에만 사용
+  profileImage?: string;    // 프로필 이미지, 선택 사항
 }
 
 export interface ChatInputProps {
