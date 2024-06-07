@@ -36,3 +36,21 @@ export interface MenuItemProps {
   };
   onMenuItemClick: (title: string) => void;
 }
+
+
+export interface ChatContentProps {
+  content: string;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+}
+
+export interface SidebarProps {
+  onMenuItemClick: (title: string) => void;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export interface HeaderProps {
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
+}
