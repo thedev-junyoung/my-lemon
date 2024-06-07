@@ -32,13 +32,16 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <div className="flex justify-center items-center h-screen bg-[#303030]">
+            <div className="bg-[#202020] p-8 rounded shadow-md w-full max-w-md">
+                <div className="flex justify-center mb-6">
+                    <img src="/logo/logo200x100.png" alt="logo" className="h-auto" />
+                </div>
                 <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
                 {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Email</label>
+                        <label className="block">Email</label>
                         <input
                             type="email"
                             value={email}
@@ -48,7 +51,7 @@ const Login: React.FC = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700">Password</label>
+                        <label className="block">Password</label>
                         <input
                             type="password"
                             value={password}

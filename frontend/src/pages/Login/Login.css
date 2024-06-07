@@ -11,5 +11,12 @@
     justify-content: center;
     align-items: center;
     text-indent: -9999px;
-  }
+}
+
+*{
+ color: white; 
+}
+label{
+  color: white;
+}
   
