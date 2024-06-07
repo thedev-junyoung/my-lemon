@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
+import { MenuItemProps } from '../../types';
 
-interface MenuItemProps {
-  item: {
-    title: string;
-    subMenu?: MenuItemProps['item'][];
-  };
-  onMenuItemClick: (title: string) => void;
-}
 
 // MenuItem 컴포넌트: 개별 메뉴 항목을 렌더링
 const MenuItem: React.FC<MenuItemProps> = ({ item, onMenuItemClick }) => {

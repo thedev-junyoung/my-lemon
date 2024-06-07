@@ -27,3 +27,11 @@ export interface ButtonProps {
   onClick: () => void;
 //  color?: string;  // 추가된 색깔 속성
 }
+
+export interface MenuItemProps {
+  item: {
+    title: string;
+    subMenu?: MenuItemProps['item'][];
+  };
+  onMenuItemClick: (title: string) => void;
+}
