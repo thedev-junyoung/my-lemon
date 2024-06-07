@@ -49,7 +49,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) =
         />
         <Button label="send" onClick={sendMessage} />
       </div>
-      <div className="text-white text-center mt-2">Legal onster는 실수할 수 있습니다. @LEMON</div>
+      <div className="text-white text-center mt-2">Legal monster는 실수할 수 있습니다. @LEMON</div>
     </div>
   );
 };
