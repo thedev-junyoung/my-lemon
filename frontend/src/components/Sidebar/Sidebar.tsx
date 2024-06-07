@@ -4,10 +4,12 @@ import AdminSidebar from './AdminSidebar';
 import NewSidebar from './NewSidebar';
 import BottomMenu from './BottomMenu';
 
+// Sidebar 컴포넌트: 사이드바를 렌더링하며, 각 타입에 따라 다른 사이드바를 표시
 const Sidebar: React.FC<{ onMenuItemClick: (title: string) => void }> = ({ onMenuItemClick }) => {
   const [sidebarType, setSidebarType] = useState('main');
 
-  const renderSidebar = () => {
+// 사이드바 타입에 따라 사이드바 컴포넌트를 렌더링
+const renderSidebar = () => {
     switch (sidebarType) {
       case 'main':
         return <MainSidebar onMenuItemClick={onMenuItemClick} />;

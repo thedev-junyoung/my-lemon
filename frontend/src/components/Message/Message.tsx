@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageProps } from '../../types';
-
+// Message 컴포넌트: 개별 채팅 메시지를 렌더링
 const Message: React.FC<MessageProps> = ({ text }) => {
   return (
     <div>
