@@ -14,8 +14,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ item, onMenuItemClick }) => {
   // 클릭 핸들러 함수: 서브메뉴가 없을 때만 onMenuItemClick 호출
   const handleItemClick = () => {
     if (!item.subMenu) {
+      // 서브메뉴가 없는 경우 API가 정의되지 않은 것으로 간주하고 클릭한 메뉴 항목의 제목을 기본 내용으로 출력
       onMenuItemClick(item.title);
     } else {
+      // 서브메뉴가 있는 경우 서브메뉴를 토글
       setOpen(!open);
     }
   };
