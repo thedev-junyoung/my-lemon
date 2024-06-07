@@ -22,7 +22,7 @@ const useMenuHandler = () => {
           break;
         // 추가 케이스 설정...
         default:
-          setContent('기본 내용');
+          setContent(`No API defined for: ${title}`);
       }
     } catch (error) {
       console.error('Error handling menu item click:', error);
