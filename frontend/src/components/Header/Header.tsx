@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth';
 import { HeaderProps } from '../../types';
 import { useNavigate } from 'react-router-dom'; // React Router 훅
 import Button from '../Button/Button';
+import Logo from '../Logo/Logo';
 
 // Header 컴포넌트: 사용자 정보를 표시하고 로그인/로그아웃 기능을 제공
 const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
@@ -35,9 +36,8 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
       </Button>
 
       {/* 로고 */}
-      <div className={`logo ${isSidebarOpen ? 'mx-auto' : ''}`}>
-        <img src={logoSrc} alt="LEMON Logo" className="h-auto" />
-      </div>
+      <Logo isResponsive={true} isCentered={isSidebarOpen} />
+
 
       {/* 사용자 정보와 로그아웃 버튼 */}
       <div className="flex items-center space-x-4">

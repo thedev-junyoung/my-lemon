@@ -57,3 +57,9 @@ export interface HeaderProps {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
 }
+
+export interface LogoProps {
+  isResponsive?: boolean;
+  isCentered?: boolean;
+}
+

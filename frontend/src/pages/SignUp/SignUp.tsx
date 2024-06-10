@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../../components/Logo/Logo';
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
@@ -23,13 +24,16 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
+    <div className="flex justify-center items-center h-screen bg-[#303030]">
+      <div className="bg-[#202020] p-8 rounded shadow-md w-full max-w-md">
+        <div className="flex justify-center mb-6">
+          <Logo />
+        </div>
+        <h1 className="text-2xl text-white font-bold text-center mb-6">Sign Up</h1>
         {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
         <form onSubmit={handleSignUp}>
           <div className="mb-4">
-            <label className="block text-gray-700">Name</label>
+            <label className="block text-white">Name</label>
             <input
               type="text"
               value={name}
@@ -39,7 +43,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Email</label>
+            <label className="block text-white">Email</label>
             <input
               type="email"
               value={email}
@@ -49,7 +53,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Password</label>
+            <label className="block text-white">Password</label>
             <input
               type="password"
               value={password}
@@ -59,7 +63,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Confirm Password</label>
+            <label className="block text-white">Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
@@ -75,7 +79,7 @@ const SignUp: React.FC = () => {
             Sign Up
           </button>
         </form>
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 text-white ">
           <p>
             Already have an account?{' '}
             <a href="/login" className="text-blue-500 hover:underline">
