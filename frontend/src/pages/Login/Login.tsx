@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import KakaoLogin from 'react-kakao-login';
-import './Login.css'; // 스타일 파일 로드
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -37,26 +36,26 @@ const Login: React.FC = () => {
                 <div className="flex justify-center mb-6">
                     <img src="/logo/logo200x100.png" alt="logo" className="h-auto" />
                 </div>
-                <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+                <h1 className="text-2xl font-bold text-center mb-6 text-white">Login</h1>
                 {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
-                        <label className="block">Email</label>
+                        <label className="block text-white">Email</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                             required
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block">Password</label>
+                        <label className="block text-white">Password</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                             required
                         />
                     </div>
@@ -67,7 +66,7 @@ const Login: React.FC = () => {
                         Log in
                     </button>
                 </form>
-                <div className="text-center mt-4">Or</div>
+                <div className="text-center mt-4 text-white">Or</div>
                 <div className="mt-3 mb-3 flex justify-center">
                     <KakaoLogin
                         token="YOUR_KAKAO_APP_KEY"
@@ -82,7 +81,7 @@ const Login: React.FC = () => {
                         />
                     </KakaoLogin>
                 </div>
-                <div className="text-center mt-4">
+                <div className="text-center mt-4 text-white">
                     <p>
                         Don't have an account?{' '}
                         <a href="/signup" className="text-blue-500 hover:underline">
