@@ -3,18 +3,24 @@
 ## 폴더 구조
 
 ```bash
+```bash
 ├── backend
+│   ├── alembic
+│   │   ├── README
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   │   └── versions
+│   │       ├── 0c4874febcf5_initial_migration.py
+│   │       └── de28faa5494e_remove_unique_constraint_from_name.py
+│   ├── alembic.ini
 │   ├── app
 │   │   ├── api
-│   │   │   ├── v1
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── dependencies
-│   │   │   │   ├── endpoints
-│   │   │   │   │   └── user.py
-│   │   │   │   ├── routers.py
-│   │   │   │   └── utils
-│   │   │   │       └── pagination.py
-│   │   │   └── v2
+│   │   │   └── v1
+│   │   │       ├── __init__.py
+│   │   │       ├── endpoints
+│   │   │       │   ├── auth.py
+│   │   │       │   └── user.py
+│   │   │       └── routers.py
 │   │   ├── core
 │   │   │   ├── config.py
 │   │   │   └── security.py
@@ -27,81 +33,96 @@
 │   │   ├── main.py
 │   │   ├── models
 │   │   │   ├── __init__.py
-│   │   │   ├── post.py
 │   │   │   └── user.py
-│   │   └── schemas
-│   │       ├── post.py
-│   │       └── user.py
+│   │   ├── schemas
+│   │   │   ├── response.py
+│   │   │   └── user.py
+│   │   └── utils
+│   │       ├── exceptions.py
+│   │       ├── logger.py
+│   │       └── pagination.py
 │   ├── docker-compose.yml
+│   ├── log
+│   │   └── application.log
 │   ├── mysql-init
 │   │   └── init.sql
 │   └── requirements.txt
-└── frontend
-    ├── README.md
-    ├── package-lock.json
-    ├── package.json
-    ├── postcss.config.js
-    ├── public
-    │   ├── favicon.ico
-    │   ├── index.html
-    │   ├── logo.png
-    │   ├── logo192.png
-    │   ├── logo512.png
-    │   ├── manifest.json
-    │   └── robots.txt
-    ├── src
-    │   ├── App.css
-    │   ├── App.tsx
-    │   ├── api
-    │   │   ├── axiosInstance.ts
-    │   │   ├── menuActions.tsx
-    │   │   └── mock.ts
-    │   ├── components
-    │   │   ├── Button
-    │   │   │   └── Button.tsx
-    │   │   ├── ChatContent
-    │   │   │   └── ChatContent.tsx
-    │   │   ├── ChatInput
-    │   │   │   └── ChatInput.tsx
-    │   │   ├── Header
-    │   │   │   └── Header.tsx
-    │   │   ├── Login
-    │   │   │   ├── Login.css
-    │   │   │   └── Login.tsx
-    │   │   ├── Message
-    │   │   │   └── Message.tsx
-    │   │   └── Sidebar
-    │   │       ├── AdminSidebar.tsx
-    │   │       ├── BottomMenu.tsx
-    │   │       ├── MainSidebar.tsx
-    │   │       ├── MenuItem.tsx
-    │   │       ├── NewSidebar.tsx
-    │   │       ├── Sidebar.tsx
-    │   │       └── SidebarData.ts
-    │   ├── hooks
-    │   │   ├── useChat.ts
-    │   │   └── useMenuHandler.ts
-    │   ├── index.css
-    │   ├── index.tsx
-    │   ├── models
-    │   ├── pages
-    │   │   ├── Home
-    │   │   │   ├── Home.css
-    │   │   │   └── Home.tsx
-    │   │   └── Login
-    │   │       └── Login.tsx
-    │   ├── react-app-env.d.ts
-    │   ├── schemas
-    │   ├── types
-    │   │   └── index.tsx
-    │   └── utils
-    ├── tailwind.config.js
-    └── tsconfig.json
+├── frontend
+│   ├── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── kakao
+│   │   │   ├── kakao_login_large_narrow.png
+│   │   │   ├── kakao_login_large_wide.png
+│   │   │   ├── kakao_login_medium_narrow.png
+│   │   │   └── kakao_login_medium_wide.png
+│   │   ├── logo
+│   │   │   ├── logo100x50.png
+│   │   │   ├── logo150x75.png
+│   │   │   └── logo200x100.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.tsx
+│   │   ├── api
+│   │   │   ├── axiosInstance.ts
+│   │   │   ├── menuActions.tsx
+│   │   │   └── mock.ts
+│   │   ├── components
+│   │   │   ├── Button
+│   │   │   │   ├── Button.tsx
+│   │   │   │   └── SendBtn.tsx
+│   │   │   ├── ChatContent
+│   │   │   │   └── ChatContent.tsx
+│   │   │   ├── ChatInput
+│   │   │   │   └── ChatInput.tsx
+│   │   │   ├── Header
+│   │   │   │   └── Header.tsx
+│   │   │   ├── InputField
+│   │   │   │   └── InputField.tsx
+│   │   │   ├── Logo
+│   │   │   │   └── Logo.tsx
+│   │   │   ├── Message
+│   │   │   │   └── Message.tsx
+│   │   │   └── Sidebar
+│   │   │       ├── AdminSidebar.tsx
+│   │   │       ├── BottomMenu.tsx
+│   │   │       ├── MainSidebar.tsx
+│   │   │       ├── MenuItem.tsx
+│   │   │       ├── NewSidebar.tsx
+│   │   │       ├── Sidebar.tsx
+│   │   │       └── SidebarData.ts
+│   │   ├── hooks
+│   │   │   ├── useAuth.ts
+│   │   │   ├── useChat.ts
+│   │   │   └── useMenuHandler.ts
+│   │   ├── index.css
+│   │   ├── index.tsx
+│   │   ├── models
+│   │   ├── pages
+│   │   │   ├── Home
+│   │   │   │   └── Home.tsx
+│   │   │   ├── Login
+│   │   │   │   └── Login.tsx
+│   │   │   └── SignUp
+│   │   │       └── SignUp.tsx
+│   │   ├── react-app-env.d.ts
+│   │   ├── schemas
+│   │   ├── types
+│   │   │   └── index.tsx
+│   │   └── utils
+│   ├── tailwind.config.js
+│   └── tsconfig.json
 ```
+## 백엔드 구조
 
-### 백엔드 구조
-
-- `api/v1/endpoints/user.py`: 사용자 관련 CRUD 엔드포인트 정의
+- `api/v1/endpoints/auth.py`: 인증 관련 엔드포인트 정의
+- `api/v1/endpoints/user.py`: 사용자 관련 엔드포인트 정의
 - `core/config.py`: 애플리케이션 설정 관리
 - `core/security.py`: 보안 관련 설정 및 기능
 - `crud/user.py`: 사용자 데이터베이스 CRUD 로직
@@ -111,40 +132,68 @@
 - `main.py`: FastAPI 애플리케이션 진입점
 - `models/user.py`: 사용자 데이터베이스 모델 정의
 - `schemas/user.py`: 사용자 Pydantic 스키마 정의
+- `schemas/response.py`: 표준 응답 구조 정의
+- `utils/exceptions.py`: 예외 처리 유틸리티
+- `utils/logger.py`: 로깅 유틸리티
+- `utils/pagination.py`: 페이징 유틸리티
+- `log/application.log`: 애플리케이션 로그 파일
 
-### 프론트엔드 구조
+### Alembic 디렉토리 구조 및 설명
+Alembic은 SQLAlchemy 기반 애플리케이션에서 데이터베이스 스키마의 버전 관리를 지원하는 도구입니다. 이를 통해 데이터베이스 스키마의 변경 사항을 추적하고, 일관되게 관리할 수 있습니다.
+- `alembic/env.py`: Alembic 설정 파일. 데이터베이스 연결 및 마이그레이션 환경을 설정합니다.
+- `alembic/script.py.mako`: Alembic 마이그레이션 스크립트 템플릿 파일.
+- `alembic/versions/`: 버전별 마이그레이션 파일이 저장되는 디렉토리.
+    - `0c4874febcf5_initial_migration.py`: 초기 마이그레이션 파일. 데이터베이스 스키마 생성 내용을 포함.
+    - `de28faa5494e_remove_unique_constraint_from_name.py`: 특정 변경 사항을 반영한 마이그레이션 파일.
+- `alembic.ini`: Alembic 기본 설정 파일. 데이터베이스 URL, 스크립트 위치 등을 설정합니다.
 
-#### 컴포넌트
+
+## 프론트엔드 구조
+
+### 컴포넌트
+
 - `src/components`: 모든 React 컴포넌트를 포함하는 디렉토리입니다.
-    - `Button`: 버튼 컴포넌트 및 스타일 (Button.css, Button.tsx)
-    - `ChatContent`: 채팅 내용을 표시하는 컴포넌트 및 스타일 (ChatContent.css, ChatContent.tsx)
-    - `ChatInput`: 채팅 메시지를 입력하는 컴포넌트 및 스타일 (ChatInput.css, ChatInput.tsx)
-    - `Header`: 애플리케이션 헤더 컴포넌트 및 스타일 (Header.css, Header.tsx)
-    - `Login`: 로그인 폼 컴포넌트 및 스타일 (Login.css, Login.tsx)
-    - `Message`: 개별 채팅 메시지를 표시하는 컴포넌트 및 스타일 (Message.css, Message.tsx)
-    - `Sidebar`: 사이드바 컴포넌트 및 스타일 (Sidebar.css, Sidebar.tsx)
+    
+    - `Button`: 버튼 컴포넌트 및 스타일
+    - `ChatContent`: 채팅 내용을 표시하는 컴포넌트
+    - `ChatInput`: 채팅 메시지를 입력하는 컴포넌트
+    - `Header`: 애플리케이션 헤더 컴포넌트
+    - `Logo`: 로고 컴포넌트
+    - `Message`: 개별 채팅 메시지를 표시하는 컴포넌트
+    - `Sidebar`: 사이드바 컴포넌트
+    - `InputField`: 입력 필드 컴포넌트
 - `src/App.tsx`: 메인 React 컴포넌트입니다.
+    
 - `src/index.tsx`: React 애플리케이션의 진입점입니다.
+    
 
-#### API
-- `src/api/userApi.ts`: 사용자 관련 API 통신 함수를 정의합니다.
+### API
 
-#### Hooks
+- `src/api/axiosInstance.ts`: Axios 인스턴스를 설정하여 API 요청을 관리합니다.
+- `src/api/menuActions.tsx`: 메뉴 관련 API 액션 정의
+- `src/api/mock.ts`: API 모킹 설정
+
+### Hooks
+
+- `src/hooks/useAuth.ts`: 인증 관련 커스텀 훅
 - `src/hooks/useChat.ts`: 채팅 관련 커스텀 훅
 - `src/hooks/useMenuHandler.ts`: 메뉴 클릭 핸들러 커스텀 훅
 
-#### 모델 및 스키마
+### 모델 및 스키마
+
 - `src/models/user.ts`: 프론트엔드에서 사용하는 사용자 모델을 정의합니다.
 - `src/schemas/user.ts`: 사용자 Pydantic 스키마를 정의합니다 (백엔드와 일관성을 위해).
 
-#### 타입
+### 타입
+
 - `src/types/index.ts`: 모든 타입 정의를 포함하는 파일입니다.
-- `src/api/menuActions.tsx`: 메뉴 관련 API 액션 정의
-- `src/api/mock.ts`: API 모킹 설정
-#### 유틸리티
+
+### 유틸리티
+
 - `src/utils/helpers.ts`: 유틸리티 함수를 포함하는 파일입니다.
 
-#### 스타일
+### 스타일
+
 - `src/App.css`: 메인 React 컴포넌트의 스타일을 정의합니다.
 - `src/index.css`: 전역 스타일을 정의합니다.
 
