@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axiosInstance.post('/api/login', { email, password });
+            const response = await axiosInstance.post('/auth/login', { email, password });
             // 성공 처리 로직 추가
             console.log(response.data);
             navigate('/');

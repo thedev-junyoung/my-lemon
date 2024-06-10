@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import InputField from '../../components/InputField/InputField'; // 새로 만든 InputField 컴포넌트
+import Button from '../../components/Button/Button';
+import axiosInstance from '../../api/axiosInstance'; // Axios 인스턴스 가져오기
 import Logo from '../../components/Logo/Logo';
-
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,17 +12,21 @@ const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
       return;
     }
-
-    // 예제용으로 간단한 회원가입 로직
-    // 실제로는 서버에 데이터를 보내야 합니다.
-    navigate('/login');
+    try {
+      const response = await axiosInstance.post('/auth/signup', { name, email, password });
+      // 성공 처리 로직 추가
+      console.log(response.data);
+      navigate('/login');
+    } catch (error) {
+      setErrorMessage('Sign up failed');
+    }
   };
 
   return (
@@ -29,57 +35,23 @@ const SignUp: React.FC = () => {
         <div className="flex justify-center mb-6">
           <Logo />
         </div>
-        <h1 className="text-2xl text-white font-bold text-center mb-6">Sign Up</h1>
+        <h1 className="text-2xl font-bold text-center mb-6 text-white">Sign Up</h1>
         {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
         <form onSubmit={handleSignUp}>
-          <div className="mb-4">
-            <label className="block text-white">Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-white">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-white">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-white">Confirm Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition"
-          >
+          <InputField label="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <InputField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <InputField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <InputField
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Button type="submit" className="w-full py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 transition">
             Sign Up
-          </button>
+          </Button>
         </form>
-        <div className="text-center mt-4 text-white ">
+        <div className="text-center mt-4 text-white">
           <p>
             Already have an account?{' '}
             <a href="/login" className="text-blue-500 hover:underline">
