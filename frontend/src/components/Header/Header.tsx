@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'; // React Router 훅
 
 // Header 컴포넌트: 사용자 정보를 표시하고 로그인/로그아웃 기능을 제공
 const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
   const [logoSrc, setLogoSrc] = useState<string>('/logo/logo150x75.png');
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 네비게이션 기능 추가
 
