@@ -1,7 +1,7 @@
 // src/components/ChatInput/ChatInput.tsx
 import React, { useRef, useEffect } from 'react';
 import { ChatInputProps } from '../../types';
-import Button from '../Button/Button';
+import SendBtn from '../Button/SendBtn';
 
 // ChatInput 컴포넌트: 메시지 입력 필드와 전송 버튼을 포함
 const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) => {
@@ -47,7 +47,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ input, setInput, sendMessage }) =
           onKeyDown={handleKeyDown}
           style={{ lineHeight: '1.5', minHeight: '48px', maxHeight: '300', borderRadius: '25px' }}
         />
-        <Button label="send" onClick={sendMessage} />
+        <SendBtn onClick={sendMessage} />
       </div>
       <div className="text-white text-center mt-2">Legal monster는 실수할 수 있습니다. @LEMON</div>
     </div>

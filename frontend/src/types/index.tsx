@@ -23,10 +23,13 @@ export interface ChatInputProps {
   sendMessage: () => void;
 }
 
+// src/types.ts
 export interface ButtonProps {
-  label: string;
-  onClick: () => void;
-//  color?: string;  // 추가된 색깔 속성
+  onClick?: () => void;
+  className?: string;
+  children?: React.ReactNode;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export interface MenuItemProps {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { HeaderProps } from '../../types';
 import { useNavigate } from 'react-router-dom'; // React Router 훅
-
+import Button from '../Button/Button';
 
 // Header 컴포넌트: 사용자 정보를 표시하고 로그인/로그아웃 기능을 제공
 const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
@@ -30,13 +30,9 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
   return (
     <div className="flex justify-between items-center bg-[#202020] text-white p-4">
       {/* 햄버거 버튼 */}
-      <button
-        id="hamburger-button"
-        className="text-white md:hidden text-3xl p-1" // 텍스트 크기와 패딩 조정
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        &#9776;
-      </button>
+      <Button className="text-white md:hidden text-3xl p-1 bg-gray-800 hover:bg-gray-700 rounded-full">
+        &#9776; {/* 햄버거 메뉴 아이콘 */}
+      </Button>
 
       {/* 로고 */}
       <div className={`logo ${isSidebarOpen ? 'mx-auto' : ''}`}>
@@ -53,20 +49,23 @@ const Header: React.FC<HeaderProps> = ({ isSidebarOpen, setIsSidebarOpen }) => {
               alt="Profile"
               className="w-10 h-10 rounded-full"
             />
-            <button className="bg-red-600 p-2 rounded" onClick={logout}>
+            <Button
+              className="bg-red-600 p-2 rounded"
+              onClick={logout}
+            >
               Logout
-            </button>
+            </Button>
           </>
         ) : (
-          <button
-          onClick={() => navigate('/Login')} // Login 버튼 클릭 시 /Login 페이지로 이동
-          className="p-2 bg-blue-600 text-white rounded"
-        >
+          <Button
+            className="p-2 bg-blue-600 text-white rounded"
+            onClick={() => navigate('/Login')}
+          >
             Login
-          </button>
+          </Button>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
