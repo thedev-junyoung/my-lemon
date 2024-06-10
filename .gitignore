@@ -27,7 +27,10 @@ frontendyarn-error.log*
 backend/venv/
 *.pyc
 __pycache__/
-
+backend/.env
+backend/alembic.ini
+backend/docker-compose.yml
+mysql-init/init.sql
 
 # === General ====================================
 *.log

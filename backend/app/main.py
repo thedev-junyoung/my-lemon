@@ -31,15 +31,12 @@ async def lifespan(app: FastAPI):
 create_tables()
 
 # API 라우터 포함
-app.include_router(api_v1_router, prefix="/api/v1")
+app.include_router(api_v1_router)
 
 @app.get("/")
 def read_root():
     return {"message": "Hello, World!"}
 
-@app.get("/api/injury")
-def read_root():
-    return {"message": "Hello, World!"}
 
 # === build 패키징 ===================================================== //위의 '/' 엔드포인트 삭제 해야함. 
 """ from fastapi.staticfiles import StaticFiles

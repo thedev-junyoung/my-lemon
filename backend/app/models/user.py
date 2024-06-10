@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean  # SQLAlchemy의 Column, Integer, String, Boolean 클래스를 가져옵니다.
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, func  # SQLAlchemy의 Column, Integer, String, Boolean 클래스를 가져옵니다.
 from sqlalchemy.orm import relationship  # 관계 설정을 위해 relationship을 가져옵니다.
 from app.db.base_class import Base  # 모든 모델이 상속받는 기본 클래스인 Base를 가져옵니다.
 
@@ -9,9 +9,11 @@ class User(Base):
     # 데이터베이스 컬럼을 정의합니다.
     id = Column(Integer, primary_key=True, index=True)  # id 컬럼: 기본 키, 인덱스 생성
     email = Column(String(255), unique=True, index=True)  # email 컬럼: 고유 값, 인덱스 생성, 최대 길이 255
-    username = Column(String(255), unique=True, index=True)  # username 컬럼: 고유 값, 인덱스 생성, 최대 길이 255
+    name = Column(String(255), unique=True, index=True)  # username 컬럼: 고유 값, 인덱스 생성, 최대 길이 255
     hashed_password = Column(String(255))  # hashed_password 컬럼: 최대 길이 255
     is_active = Column(Boolean, default=True)  # is_active 컬럼: 기본 값은 True
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
     # relationship()은 다른 테이블과의 관계를 설정할 때 사용됩니다.
     # 예를 들어, 사용자가 작성한 게시물을 정의할 때 사용할 수 있습니다.
