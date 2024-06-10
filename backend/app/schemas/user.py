@@ -5,7 +5,7 @@ from typing import Union
 # 공통 속성을 정의하는 기본 클래스
 class UserBase(BaseModel):
     name: str  # 사용자명: 문자열
-    email: str  # 이메일: 문자열
+    email: EmailStr  # 이메일: 이메일 문자열로 변경
 
 # 사용자 생성을 위한 클래스, 비밀번호를 포함
 class UserCreate(UserBase):
@@ -37,18 +37,5 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-
 class TokenData(BaseModel):
-    username: Union[str, None] = None
-
-
-""" 
-Pydantic: 데이터 검증과 직렬화를 위해 사용하는 라이브러리입니다. FastAPI와 함께 사용되어 입력 데이터의 유효성을 검사하고 응답 데이터를 자동으로 직렬화합니다.
-BaseModel: Pydantic의 기본 모델 클래스입니다. 모든 Pydantic 모델은 이 클래스를 상속받아야 합니다.
-스키마: 데이터 모델을 정의하고, 데이터를 검증 및 직렬화하기 위한 청사진입니다. FastAPI에서는 요청 바디와 응답 데이터의 검증을 위해 사용됩니다.
-
-Pydantic 모델은 DTO와 유사한 개념으로, 데이터 검증과 직렬화를 담당합니다. 
-FastAPI에서는 Pydantic 모델을 사용하여 입력 데이터의 유효성을 검증하고, 응답 데이터를 구조화하여 클라이언트에 반환합니다. 
-이를 통해 애플리케이션의 신뢰성과 보안성을 높일 수 있습니다.
-
-"""
+    email: Union[str, None] = None  # 이메일로 변경

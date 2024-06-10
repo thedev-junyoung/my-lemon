@@ -9,7 +9,7 @@ class User(Base):
     # 데이터베이스 컬럼을 정의합니다.
     id = Column(Integer, primary_key=True, index=True)  # id 컬럼: 기본 키, 인덱스 생성
     email = Column(String(255), unique=True, index=True)  # email 컬럼: 고유 값, 인덱스 생성, 최대 길이 255
-    name = Column(String(255), unique=True, index=True)  # username 컬럼: 고유 값, 인덱스 생성, 최대 길이 255
+    name = Column(String(255), index=True)  # name 컬럼: 인덱스 생성, 최대 길이 255
     hashed_password = Column(String(255))  # hashed_password 컬럼: 최대 길이 255
     is_active = Column(Boolean, default=True)  # is_active 컬럼: 기본 값은 True
     created_at = Column(DateTime, server_default=func.now())
