@@ -4,16 +4,9 @@ from app.schemas.user import UserCreate, UserLogin, User, Token, TokenData
 from app.models.user import User as UserModel
 from app.core.security import get_password_hash, verify_password, create_access_token, decode_access_token
 from app.db.session import get_db
+from app.utils.logger import logger
 
 router = APIRouter()
-
-@router.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
-
-@router.get("/signup", response_model=User)
-def test():
-    return {"message": "Hello, World!"}
 
 @router.post("/signup", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -29,6 +22,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
+    logger.info('')
     db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if not db_user or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect email or password")
