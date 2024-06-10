@@ -23,10 +23,12 @@ const SignUp: React.FC = () => {
       const response = await axiosInstance.post('/auth/signup', { name, email, password });
       // 성공 처리 로직 추가
       console.log(response.data);
+      alert('회원가입 완료')
       navigate('/login');
-    } catch (error) {
-      setErrorMessage('Sign up failed');
+    } catch (error:any) {
+      console.log('error.response:',error.response)
     }
+
   };
 
   return (

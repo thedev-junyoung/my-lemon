@@ -1,33 +1,39 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status, HTTPException, Response
 from sqlalchemy.orm import Session
-from app.schemas.user import UserCreate, UserLogin, User, Token, TokenData
+from fastapi.responses import JSONResponse
+from app.schemas.user import UserCreate, UserLogin, Token, User
+from app.schemas.response import SuccessResponse, ErrorResponse
 from app.models.user import User as UserModel
 from app.core.security import get_password_hash, verify_password, create_access_token, decode_access_token
 from app.db.session import get_db
-from app.utils.logger import logger
+from app.utils.exceptions import BadRequestException
 
 router = APIRouter()
 
-@router.post("/signup", response_model=User)
+@router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=SuccessResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise BadRequestException("이미 등록된 이메일입니다.")
     hashed_password = get_password_hash(user.password)
-    db_user = UserModel(name=user.name, email=user.email, hashed_password=hashed_password)
-    db.add(db_user)
+    new_user = UserModel(name=user.name, email=user.email, hashed_password=hashed_password)
+    db.add(new_user)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(new_user)
+    return SuccessResponse(message="회원가입 완료", data={"id": new_user.id, "name": new_user.name, "email": new_user.email})
 
-@router.post("/login", response_model=Token)
-def login(user: UserLogin, db: Session = Depends(get_db)):
-    logger.info('')
+@router.post("/login", response_model=SuccessResponse)
+def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     db_user = db.query(UserModel).filter(UserModel.email == user.email).first()
     if not db_user or not verify_password(user.password, db_user.hashed_password):
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
+        raise BadRequestException("이메일 또는 비밀번호가 잘못되었습니다.")
+    # 토큰 생성
     access_token = create_access_token(data={"sub": db_user.email})
-    return Token(access_token=access_token, token_type="bearer")
+    
+    # 응답 헤더에 토큰 포함
+    response.headers["Authorization"] = f"Bearer {access_token}"
+    
+    return SuccessResponse(data=Token(access_token=access_token, token_type="bearer"))
 
 # Current user dependency
 from fastapi.security import OAuth2PasswordBearer

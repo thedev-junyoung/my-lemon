@@ -7,7 +7,17 @@ from app.core.config import settings
 from contextlib import asynccontextmanager
 from app.db.session import engine
 from app.db.base import Base
-
+from fastapi.exceptions import RequestValidationError
+from app.utils.exceptions import (
+    custom_http_exception_handler,
+    validation_exception_handler,
+    BadRequestException,
+    UnauthorizedException,
+    ForbiddenException,
+    NotFoundException,
+    UnprocessableEntityException,
+    InternalServerErrorException
+)
 app = FastAPI()
 
 # CORS 설정
@@ -32,6 +42,17 @@ create_tables()
 
 # API 라우터 포함
 app.include_router(api_v1_router)
+
+
+# 예외 핸들러 등록
+app.add_exception_handler(BadRequestException, custom_http_exception_handler)
+app.add_exception_handler(UnauthorizedException, custom_http_exception_handler)
+app.add_exception_handler(ForbiddenException, custom_http_exception_handler)
+app.add_exception_handler(NotFoundException, custom_http_exception_handler)
+app.add_exception_handler(UnprocessableEntityException, custom_http_exception_handler)
+app.add_exception_handler(InternalServerErrorException, custom_http_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+
 
 @app.get("/")
 def read_root():
