@@ -6,12 +6,15 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: test_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: 081908
+      MYSQL_DATABASE: lemon
+      MYSQL_USER: lemon
+      MYSQL_PASSWORD: 081908
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER_HOST: '%'
     ports:
       - "3306:3306"
+    command: --default-authentication-plugin=caching_sha2_password
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
