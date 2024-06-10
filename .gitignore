@@ -9,6 +9,8 @@ frontend/coverage
 
 # production
 frontend/build
+frontend/.env.development
+frontend/.env.production
 
 # misc
 frontend.DS_Store
