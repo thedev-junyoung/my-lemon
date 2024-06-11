@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
-from app.core.security import get_password_hash
+from app.core.auth import get_password_hash
 
 # ORM 개념 설명:
 # ORM(Object Relational Mapping)은 객체 지향 프로그래밍 언어를 사용하여 데이터베이스를 조작하는 기술입니다.
@@ -32,7 +32,7 @@ def create_user(db: Session, user: UserCreate):
     # 비밀번호 해시화 (암호화)
     hashed_password = get_password_hash(user.password)
     # User 인스턴스 생성 (새 사용자)
-    db_user = User(username=user.username, email=user.email, hashed_password=hashed_password)
+    db_user = User(username=user.name, email=user.email, hashed_password=hashed_password)
     # 데이터베이스에 새 사용자 추가
     db.add(db_user)
     # 변경 사항 커밋 (저장)
@@ -43,16 +43,21 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 # 기존 사용자를 업데이트하는 함수
-def update_user(db: Session, user_id: int, user: UserUpdate):
+def update_user(db: Session, user_id: int, user_update: UserUpdate):
     # ID로 기존 사용자 조회
     db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        return None
     # 사용자 정보 업데이트
-    db_user.username = user.username
-    db_user.email = user.email
-    db_user.hashed_password = get_password_hash(user.password)
+    update_data = user_update.model_dump(exclude_unset=True)  # 설정되지 않은 필드 제외
+    if "password" in update_data:
+        update_data["hashed_password"] = get_password_hash(update_data.pop("password"))
+    for key, value in update_data.items():
+        setattr(db_user, key, value)
     # 변경 사항 커밋 (저장)
     db.commit()
     # 업데이트된 사용자 반환
+    db.refresh(db_user)
     return db_user
 
 # 사용자를 삭제하는 함수

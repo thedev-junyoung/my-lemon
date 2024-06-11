@@ -14,6 +14,8 @@ class User(Base):
     is_active = Column(Boolean, default=True)  # is_active 컬럼: 기본 값은 True
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    
+    refresh_tokens = relationship("RefreshToken", back_populates="user")
 
     # relationship()은 다른 테이블과의 관계를 설정할 때 사용됩니다.
     # 예를 들어, 사용자가 작성한 게시물을 정의할 때 사용할 수 있습니다.

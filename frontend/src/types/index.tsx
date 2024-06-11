@@ -63,3 +63,12 @@ export interface LogoProps {
   isCentered?: boolean;
 }
 
+export interface InputFieldProps {
+  label: string;
+  type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: () => void;  // onBlur를 선택적으로 사용
+  errorMessage?: string;
+  required?: boolean;
+}

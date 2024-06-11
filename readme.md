@@ -1,8 +1,9 @@
-# React + FastAPI Boilerplate
+# Legal Monster project
 
-## 폴더 구조
+## 프로젝트 구조
 
-```bash
+### 디렉토리 구조
+
 ```bash
 ├── backend
 │   ├── alembic
@@ -11,6 +12,7 @@
 │   │   ├── script.py.mako
 │   │   └── versions
 │   │       ├── 0c4874febcf5_initial_migration.py
+│   │       ├── cd66a80cf5f8_add_refreshtoken_table.py
 │   │       └── de28faa5494e_remove_unique_constraint_from_name.py
 │   ├── alembic.ini
 │   ├── app
@@ -22,7 +24,11 @@
 │   │   │       │   └── user.py
 │   │   │       └── routers.py
 │   │   ├── core
+│   │   │   ├── auth.py
 │   │   │   ├── config.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── handlers
+│   │   │   │   └── http_handlers.py
 │   │   │   └── security.py
 │   │   ├── crud
 │   │   │   └── user.py
@@ -31,14 +37,17 @@
 │   │   │   ├── base_class.py
 │   │   │   └── session.py
 │   │   ├── main.py
+│   │   ├── middleware
+│   │   │   └── csrf.py
 │   │   ├── models
 │   │   │   ├── __init__.py
+│   │   │   ├── refresh_token.py
 │   │   │   └── user.py
 │   │   ├── schemas
+│   │   │   ├── auth.py
 │   │   │   ├── response.py
 │   │   │   └── user.py
 │   │   └── utils
-│   │       ├── exceptions.py
 │   │       ├── logger.py
 │   │       └── pagination.py
 │   ├── docker-compose.yml

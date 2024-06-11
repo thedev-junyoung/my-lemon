@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.routers import router as api_v1_router
 from app.db.session import create_tables  # 올바르게 임포트
@@ -8,16 +8,13 @@ from contextlib import asynccontextmanager
 from app.db.session import engine
 from app.db.base import Base
 from fastapi.exceptions import RequestValidationError
-from app.utils.exceptions import (
-    custom_http_exception_handler,
-    validation_exception_handler,
-    BadRequestException,
-    UnauthorizedException,
-    ForbiddenException,
-    NotFoundException,
-    UnprocessableEntityException,
-    InternalServerErrorException
+from app.core.dependencies import (
+    get_http_exception_handler,http_exception_handler
 )
+from app.core.security import csp_middleware
+from starlette.middleware.sessions import SessionMiddleware
+from app.middleware.csrf import CSRFMiddleware
+
 app = FastAPI()
 
 # CORS 설정
@@ -28,6 +25,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# === 미들웨어 =================================================================================
+# 세션 미들웨어 추가
+app.add_middleware(SessionMiddleware, secret_key="your-secret-key")
+
+@app.middleware("http")
+async def csp_middleware_wrapper(request: Request, call_next):
+    return await csp_middleware(request, call_next)
+
+# CSRF 미들웨어 추가
+app.add_middleware(CSRFMiddleware)
+
+# ===============================================================================================
 
 # Lifespan 이벤트 핸들러 정의
 @asynccontextmanager
@@ -44,14 +53,9 @@ create_tables()
 app.include_router(api_v1_router)
 
 
-# 예외 핸들러 등록
-app.add_exception_handler(BadRequestException, custom_http_exception_handler)
-app.add_exception_handler(UnauthorizedException, custom_http_exception_handler)
-app.add_exception_handler(ForbiddenException, custom_http_exception_handler)
-app.add_exception_handler(NotFoundException, custom_http_exception_handler)
-app.add_exception_handler(UnprocessableEntityException, custom_http_exception_handler)
-app.add_exception_handler(InternalServerErrorException, custom_http_exception_handler)
-app.add_exception_handler(RequestValidationError, validation_exception_handler)
+# Registering the single exception handler
+app.add_exception_handler(HTTPException, get_http_exception_handler())
+app.add_exception_handler(RequestValidationError, get_http_exception_handler())
 
 
 @app.get("/")

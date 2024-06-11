@@ -6,3 +6,4 @@ pydantic==2.7.2
 python-dotenv
 cryptography==42.0.7
 PyJWT==2.8.0
+itsdangerous==2.2.0

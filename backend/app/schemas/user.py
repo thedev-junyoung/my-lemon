@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
-from typing import Union
+from typing import Union, Optional
 
 # 사용자 정보의 기본 속성을 정의하는 클래스
 class UserBase(BaseModel):
@@ -12,8 +12,11 @@ class UserCreate(UserBase):
     password: str  # 사용자의 비밀번호
 
 # 사용자 업데이트 시 필요한 속성을 정의하는 클래스
-class UserUpdate(UserBase):
-    password: str  # 사용자의 비밀번호
+# 업데이트 시 필드들을 옵셔널하게 설정
+class UserUpdate(BaseModel):
+    name: Optional[str] = Field(None, description="사용자 이름")
+    password: Optional[str] = Field(None, description="사용자 비밀번호")
+
 
 # 데이터베이스에 저장된 사용자 정보를 정의하는 기본 클래스
 class UserInDBBase(UserBase):
@@ -24,7 +27,10 @@ class UserInDBBase(UserBase):
 
     # 이 설정을 통해 Pydantic이 ORM 모델과의 호환성을 유지하도록 함
     class Config:
-        orm_mode = True
+        from_attributes = True
+        # `from_orm` 대신 `from_attributes` 사용
+        model_config = {'from_attributes': True}
+            
 
 # 클라이언트에 반환할 사용자 정보를 정의하는 클래스
 class User(UserInDBBase):
@@ -35,14 +41,6 @@ class UserLogin(BaseModel):
     email: EmailStr  # 사용자의 이메일 (EmailStr을 사용해 이메일 형식 검증)
     password: str  # 사용자의 비밀번호
 
-# JWT 토큰 정보를 정의하는 클래스
-class Token(BaseModel):
-    access_token: str  # JWT 액세스 토큰
-    token_type: str  # 토큰 타입 (일반적으로 "bearer")
-
-# JWT 토큰의 페이로드 데이터를 정의하는 클래스
-class TokenData(BaseModel):
-    email: Union[str, None] = None  # 토큰에 포함된 이메일 (선택적, 없을 수도 있음)
 
 """
 Pydantic 모델 클래스에 대한 주석:
