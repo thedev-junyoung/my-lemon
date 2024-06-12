@@ -31,6 +31,8 @@ backend/.env
 backend/alembic.ini
 backend/docker-compose.yml
 mysql-init/init.sql
+backend/test.db
+
 
 # === General ====================================
 *.log
