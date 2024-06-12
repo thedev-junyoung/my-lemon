@@ -5,10 +5,9 @@ from app.schemas.user import UserCreate, UserLogin
 from app.schemas.auth import TokenRefreshRequest
 from app.schemas.response import SuccessResponse
 from app.models.user import User as UserModel
-from app.core.auth import get_password_hash, verify_password, create_access_token, decode_access_token, verify_refresh_token, create_refresh_token, verify_user_refresh_token
+from app.core.auth import get_password_hash, verify_password, create_access_token, decode_access_token, verify_refresh_token, create_refresh_token, verify_user_refresh_token, generate_csrf_token
 from app.db.session import get_db
 from app.core.dependencies import get_http_exception_handler
-from app.core.security import generate_csrf_token
 from app.models.refresh_token import RefreshToken
 router = APIRouter()
 

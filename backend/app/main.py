@@ -1,23 +1,23 @@
+# main.py
+
 import os
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1.routers import router as api_v1_router
-from app.db.session import create_tables  # 올바르게 임포트
-from app.core.config import settings
 from contextlib import asynccontextmanager
-from app.db.session import engine
-from app.db.base import Base
-from fastapi.exceptions import RequestValidationError
-from app.core.dependencies import (
-    get_http_exception_handler,http_exception_handler
-)
-from app.core.security import csp_middleware
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.exceptions import RequestValidationError
+
+from app.api.v1.routers import router as api_v1_router
+from app.db.session import create_tables, engine
+from app.db.base import Base
+from app.core.config import settings
+from app.core.dependencies import get_http_exception_handler
+from app.middleware.csp import csp_middleware
 from app.middleware.csrf import CSRFMiddleware
 
 app = FastAPI()
 
-# CORS 설정
+# === CORS 설정 =================================================================================
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,  # 실제 운영 환경에서는 특정 도메인만 허용
@@ -25,79 +25,55 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# === 미들웨어 =================================================================================
-# 세션 미들웨어 추가
-app.add_middleware(SessionMiddleware, secret_key="your-secret-key")
+
+# === 미들웨어 ==================================================================================
+app.add_middleware(SessionMiddleware, secret_key="your-secret-key")  # 세션 미들웨어 추가
 
 @app.middleware("http")
 async def csp_middleware_wrapper(request: Request, call_next):
+    """CSP 미들웨어 래퍼 함수"""
     return await csp_middleware(request, call_next)
 
-# CSRF 미들웨어 추가
-app.add_middleware(CSRFMiddleware)
+app.add_middleware(CSRFMiddleware)  # CSRF 미들웨어 추가
 
-# ===============================================================================================
-
-# Lifespan 이벤트 핸들러 정의
+# === 데이터베이스 및 Lifespan 설정 ============================================================
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 애플리케이션 시작 시 테이블 생성
+    """애플리케이션의 lifespan 이벤트 핸들러 정의"""
     Base.metadata.create_all(bind=engine)
     yield
     # 종료 시 수행할 작업이 있으면 여기에 추가
 
-# 데이터베이스 테이블 생성
-create_tables()
+create_tables()  # 데이터베이스 테이블 생성
 
-# API 라우터 포함
-app.include_router(api_v1_router)
+# === 라우터 및 예외 처리 =========================================================================
+app.include_router(api_v1_router)  # API 라우터 포함
 
-
-# Registering the single exception handler
 app.add_exception_handler(HTTPException, get_http_exception_handler())
 app.add_exception_handler(RequestValidationError, get_http_exception_handler())
 
-
+# === 기본 라우트 ============================================================================
 @app.get("/")
 def read_root():
+    """기본 라우트"""
     return {"message": "Hello, World!"}
 
-
-# === build 패키징 ===================================================== //위의 '/' 엔드포인트 삭제 해야함. 
-""" from fastapi.staticfiles import StaticFiles
+# === 주석 처리된 패키징 관련 코드 =============================================================
+"""
+# React 빌드 디렉토리 경로 설정 및 정적 파일 제공 예시
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from pathlib import Path
 
-# React 빌드 디렉토리 경로
 build_path = Path(__file__).parent.parent.parent / "frontend" / "build"
 
-# 모든 경로를 처리하는 엔드포인트
 @app.get("/{full_path:path}", response_class=HTMLResponse)
 async def serve_react_app(full_path: str):
     return (build_path / "index.html").read_text()
 
-
-# 정적 파일 제공
 app.mount("/static", StaticFiles(directory=build_path / "static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_react_app():
-    return (build_path / "index.html").read_text() """
-
-
-""" 
-작동 방식
-정적 파일 서빙: 
-app.mount("/static", StaticFiles(directory=build_path / "static"), name="static")은 
-React 애플리케이션의 정적 파일을 /static 경로에서 제공하도록 설정합니다.
-
-루트 경로 처리: 
-@app.get("/", response_class=HTMLResponse)는 '/' 경로로 들어오는 요청에 대해 
-React 애플리케이션의 index.html을 반환합니다.
-
-모든 경로 처리: 
-@app.get("/{full_path:path}", response_class=HTMLResponse)는 
-/api/v1가 아닌 모든 경로로 들어오는 요청에 대해 React 애플리케이션의 index.html을 반환합니다. 
-여기서 full_path는 경로 변수로서 모든 경로를 캡처합니다. 
-이는 클라이언트 사이드 라우팅을 위해 모든 경로를 index.html로 리디렉션하여 React 라우터가 해당 경로를 처리할 수 있게 합니다.
+    return (build_path / "index.html").read_text()
 """

@@ -1,7 +1,7 @@
 # app/middleware/csrf.py
 from fastapi import Request, HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
-from app.core.security import validate_csrf_token
+from app.core.auth import validate_csrf_token
 EXEMPT_PATHS = ["/auth/login", "/auth/signup"]  # CSRF 검증을 생략할 경로들
 
 class CSRFMiddleware(BaseHTTPMiddleware):

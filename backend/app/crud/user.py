@@ -32,7 +32,7 @@ def create_user(db: Session, user: UserCreate):
     # 비밀번호 해시화 (암호화)
     hashed_password = get_password_hash(user.password)
     # User 인스턴스 생성 (새 사용자)
-    db_user = User(username=user.name, email=user.email, hashed_password=hashed_password)
+    db_user = User(name=user.name, email=user.email, hashed_password=hashed_password)
     # 데이터베이스에 새 사용자 추가
     db.add(db_user)
     # 변경 사항 커밋 (저장)
