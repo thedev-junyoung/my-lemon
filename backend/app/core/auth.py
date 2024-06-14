@@ -38,6 +38,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 # === JWT ===========================================================================
 # JWT 토큰 생성 함수
 def create_access_token(data: dict, expires_delta: timedelta = None):
+    logger.info('')
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -49,6 +50,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 # JWT 토큰 디코딩 함수
 def decode_access_token(token: str) -> Union[Dict[str, Union[str, int]], None]:
+    logger.info('')
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -67,6 +69,7 @@ def decode_access_token(token: str) -> Union[Dict[str, Union[str, int]], None]:
 
 # JWT 토큰 검증 함수
 def verify_jwt_token(token: str) -> Dict[str, Union[str, int]]:
+    logger.info(f'token:{token}')
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -84,12 +87,20 @@ def verify_jwt_token(token: str) -> Dict[str, Union[str, int]]:
         )
 
 # 현재 사용자 가져오기 함수
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> UserModel:
+async def get_current_user(request: Request, db: Session = Depends(get_db)) -> UserModel:
+    logger.info('')
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    token = request.cookies.get("access_token")
+    if not token:
+        raise credentials_exception
+
+    # 쿠키에서 Bearer 문자열 제거
+    token = token.replace("Bearer ", "")
+    logger.warn(f'token:{token}')
     payload = decode_access_token(token)
     if payload is None:
         raise credentials_exception
@@ -103,11 +114,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
 
 # 현재 활성 사용자 가져오기 함수
 async def get_current_active_user(current_user: UserModel = Depends(get_current_user)) -> UserModel:
+    logger.info('get_current_active_user()')
     if not current_user.is_active:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user")
     return current_user
 
 def create_refresh_token(user_id: int, db: Session):
+    logger.info('create_refresh_token()')
     token = secrets.token_urlsafe(64)
     expires_at = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     refresh_token = RefreshToken(
@@ -150,12 +163,14 @@ CSRF_TOKEN_TIMEOUT = 3600  # 1 hourCSRF_TOKEN_TIMEOUT = 3600  # 1 hour
 
 # === CSRF =====================================================================================
 def generate_csrf_token() -> str:
+    logger.info('generate_csrf_token()')
     expiration_time = (datetime.now(timezone.utc) + timedelta(seconds=CSRF_TOKEN_TIMEOUT)).timestamp()
     data = f"{expiration_time}"
     token = hmac.new(CSRF_SECRET_KEY.encode(), data.encode(), digestmod='sha256').hexdigest()
     return f"{token}:{expiration_time}"
 
 def validate_csrf_token(csrf_token: str) -> bool:
+    logger.info('validate_csrf_token()')
     if not csrf_token:
         raise HTTPException(status_code=403, detail="CSRF token not found")
     

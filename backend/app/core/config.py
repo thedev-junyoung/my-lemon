@@ -12,13 +12,18 @@ class Settings:
     DATABASE_URL: str = os.getenv("DATABASE_URL", "mysql+pymysql://user:password@localhost/test_db")
     
     # 애플리케이션의 비밀 키 (JWT, OAuth 등에 사용)
-    #SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey")
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey")
     
     # CORS 허용할 오리진 목록
     CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "*").split(",")
 
+    # 쿠키 설정 관련 환경 변수
+    SECURE_COOKIES: bool = os.getenv("SECURE_COOKIES", "False").lower() == "true"
+    SAMESITE_POLICY: str = os.getenv("SAMESITE_POLICY", "Lax")
+
     # 기타 설정
-    #DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+    DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+    HTTPONLY_COOKIES: bool = os.getenv("HTTPONLY_COOKIES", "False").lower() == "true"
 
 # 설정 객체 생성
 settings = Settings()

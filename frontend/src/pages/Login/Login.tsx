@@ -4,7 +4,9 @@ import KakaoLogin from 'react-kakao-login';
 import InputField from '../../components/InputField/InputField'; // 새로 만든 InputField 컴포넌트
 import Button from '../../components/Button/Button';
 import axiosInstance from '../../api/axiosInstance'; // Axios 인스턴스 가져오기
+import { login, kakaoLogin } from '../../api/auth';
 import Logo from '../../components/Logo/Logo';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -15,14 +17,24 @@ const Login: React.FC = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axiosInstance.post('/auth/login', { email, password });
-            // 성공 처리 로직 추가
-            console.log(response.data);
-            navigate('/');
-        } catch (error) {
-            setErrorMessage('Invalid email or password');
+            const response = await login(email, password);
+            console.log(response);
+             // CSRF 토큰을 localStorage에 저장
+            const csrfToken = response.headers['X-CSRF-Token'];
+            if (csrfToken) {
+            localStorage.setItem('X-CSRF-Token', csrfToken);
+
+            console.log('CSRF Token stored:', csrfToken);
+            }
+            console.log('X-CSRF-Token:',csrfToken)
+            //debugger;
+            //navigate('/');
+        } catch (error: any) {
+            console.log('error:',error)
+            toast.error(error.message); // Toast로 에러 메시지를 표시
         }
     };
+
 
     const handleKakaoLoginSuccess = (response: any) => {
         console.log(response);

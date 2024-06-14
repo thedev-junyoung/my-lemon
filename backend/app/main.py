@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.exceptions import RequestValidationError
-
+from app.core.config import settings
 from app.api.v1.routers import router as api_v1_router
 from app.db.session import create_tables, engine
 from app.db.base import Base
@@ -22,8 +22,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.CORS_ORIGINS,  # 실제 운영 환경에서는 특정 도메인만 허용
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # 필요한 메소드만 허용
+    allow_headers=["Authorization", "Content-Type"],  # 필요한 헤더만 허용
+    expose_headers=["X-CSRF-Token"]  # expose_headers 추가
 )
 
 # === 미들웨어 ==================================================================================

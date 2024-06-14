@@ -14,7 +14,9 @@ class User(Base):
     is_active = Column(Boolean, default=True)  # is_active 컬럼: 기본 값은 True
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
-    
+    profile_img = Column(String(255), nullable=True)  # 새로운 필드: 프로필 이미지 URL
+    role = Column(Integer, default=10)  # role 필드 추가
+
     refresh_tokens = relationship("RefreshToken", back_populates="user")
 
     # relationship()은 다른 테이블과의 관계를 설정할 때 사용됩니다.

@@ -6,6 +6,8 @@ from typing import Union, Optional
 class UserBase(BaseModel):
     name: str  # 사용자의 이름
     email: EmailStr  # 사용자의 이메일 (EmailStr을 사용해 이메일 형식 검증)
+    profile_img: Optional[str] = None  # 프로필 이미지 URL, 선택적
+    role: int = Field(default=10, description="사용자 역할 코드")  # 기본값을 10으로 설정
 
 # 사용자 생성 시 필요한 속성을 정의하는 클래스
 class UserCreate(UserBase):
@@ -16,6 +18,8 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, description="사용자 이름")
     password: Optional[str] = Field(None, description="사용자 비밀번호")
+    profile_img: Optional[str] = None  # 프로필 이미지 URL, 선택적
+    role: Optional[int] = Field(None, description="사용자 역할 코드")  # role 필드 추가
 
 
 # 데이터베이스에 저장된 사용자 정보를 정의하는 기본 클래스
