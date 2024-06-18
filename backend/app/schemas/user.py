@@ -45,6 +45,21 @@ class UserLogin(BaseModel):
     email: EmailStr  # 사용자의 이메일 (EmailStr을 사용해 이메일 형식 검증)
     password: str  # 사용자의 비밀번호
 
+# 클라이언트에 반환할 사용자 정보를 정의하는 UserResponse 클래스
+class UserResponse(BaseModel):
+    id: int  # 사용자의 고유 ID
+    name: str  # 사용자의 이름
+    email: EmailStr  # 사용자의 이메일
+    profile_img: Optional[str] = None  # 프로필 이미지 URL
+    role: Optional[int] = Field(default=10, description="사용자 역할 코드")  # 기본값을 10으로 설정
+    is_active: bool = True  # 사용자의 활성화 상태
+    created_at: datetime  # 사용자가 생성된 시간
+    updated_at: datetime  # 사용자가 마지막으로 업데이트된 시간
+
+    class Config:
+        from_attributes = True
+        # `from_orm` 대신 `from_attributes` 사용
+        model_config = {'from_attributes': True}
 
 """
 Pydantic 모델 클래스에 대한 주석:

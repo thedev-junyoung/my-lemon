@@ -7,13 +7,15 @@ from contextlib import asynccontextmanager
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.exceptions import RequestValidationError
 from app.core.config import settings
-from app.api.v1.routers import router as api_v1_router
+from app.api.v1.routers import RouterManager
 from app.db.session import create_tables, engine
 from app.db.base import Base
 from app.core.config import settings
-from app.core.dependencies import get_http_exception_handler
+from app.core.handlers.exception_handlers import base_app_exception_handler, http_exception_handler
 from app.middleware.csp import csp_middleware
 from app.middleware.csrf import CSRFMiddleware
+from app.core.exceptions import BaseAppException
+
 
 app = FastAPI()
 
@@ -48,10 +50,14 @@ async def lifespan(app: FastAPI):
 create_tables()  # 데이터베이스 테이블 생성
 
 # === 라우터 및 예외 처리 =========================================================================
-app.include_router(api_v1_router)  # API 라우터 포함
+router_manager = RouterManager()
+app.include_router(router_manager.get_router())
 
-app.add_exception_handler(HTTPException, get_http_exception_handler())
-app.add_exception_handler(RequestValidationError, get_http_exception_handler())
+# 전역 예외 핸들러 등록
+app.add_exception_handler(BaseAppException, base_app_exception_handler)
+app.add_exception_handler(HTTPException, http_exception_handler)
+
+
 
 # === 기본 라우트 ============================================================================
 @app.get("/")

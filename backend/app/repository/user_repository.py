@@ -1,12 +1,83 @@
 from sqlalchemy.orm import Session
-from app.models.user import User
-from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user import UserUpdate
 from app.core.auth import get_password_hash
+from app.models.user import User as UserModel
+from app.models.refresh_token import RefreshToken
+from app.schemas.user import UserCreate
+from app.utils.logger import logger
+
+from datetime import datetime, timedelta, timezone
+
 
 # ORM 개념 설명:
 # ORM(Object Relational Mapping)은 객체 지향 프로그래밍 언어를 사용하여 데이터베이스를 조작하는 기술입니다.
 # SQLAlchemy는 Python의 ORM 라이브러리로, 데이터베이스 테이블과 Python 클래스를 매핑하여 데이터베이스 작업을 쉽게 할 수 있게 해줍니다.
 
+
+class UserRepository:
+    def __init__(self, db: Session):
+        self.db = db
+        logger.info('UserRepository 인스턴스 생성됨')
+
+    def get_users(self):
+        logger.info('get_users 함수 호출됨')
+        return self.db.query(UserModel).all()
+
+    def get_user(self, user_id: int):
+        return self.db.query(UserModel).filter(UserModel.id == user_id).first()
+
+    def update_user(self, user_id: int, user_update: UserUpdate):
+        db_user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        if db_user:
+            for key, value in user_update.model_dump(exclude_unset=True).items():
+                setattr(db_user, key, value)
+            self.db.commit()
+            self.db.refresh(db_user)
+        return db_user
+
+    def delete_user(self, user_id: int):
+        db_user = self.db.query(UserModel).filter(UserModel.id == user_id).first()
+        if db_user:
+            self.db.delete(db_user)
+            self.db.commit()
+            return True
+        return False
+    
+    def get_user_by_email(self, email: str) -> UserModel:
+        return self.db.query(UserModel).filter(UserModel.email == email).first()
+
+    def create_user(self, user: UserCreate, hashed_password: str) -> UserModel:
+        new_user = UserModel(name=user.name, email=user.email, hashed_password=hashed_password)
+        self.db.add(new_user)
+        self.db.commit()
+        self.db.refresh(new_user)
+        return new_user
+
+    def delete_refresh_token(self, user_id: int) -> None:
+        refresh_token = self.db.query(RefreshToken).filter(
+            RefreshToken.user_id == user_id,
+            RefreshToken.expires_at >= datetime.now(timezone.utc)
+        ).first()
+        if refresh_token:
+            self.db.delete(refresh_token)
+            self.db.commit()
+    def delete_refresh_token(self, user_id: int) -> None:
+        current_time = datetime.now(timezone.utc)
+        refresh_token = self.db.query(RefreshToken).filter(
+            RefreshToken.user_id == user_id,
+            RefreshToken.expires_at >= current_time
+        ).first()
+        if refresh_token:
+            self.db.delete(refresh_token)
+            self.db.commit()
+    def get_refresh_token(self, user_id: int) -> RefreshToken:
+        return self.db.query(RefreshToken).filter(
+            RefreshToken.user_id == user_id,
+            RefreshToken.expires_at >= datetime.now(timezone.utc)
+        ).first()
+    
+    
+"""
 # 모든 사용자를 데이터베이스에서 조회하는 함수
 def get_users(db: Session):
     # db.query(User): User 테이블에서 쿼리 생성
@@ -70,3 +141,6 @@ def delete_user(db: Session, user_id: int):
     db.commit()
     # 삭제된 사용자 반환
     return db_user
+
+
+"""

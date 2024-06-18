@@ -1,17 +1,38 @@
-from app.core.handlers.http_handlers import http_exception_handler
-from app.core.auth import get_current_user, get_current_active_user
 from app.models.user import User as UserModel
-from app.core.auth import verify_jwt_token, oauth2_scheme
+from fastapi.responses import JSONResponse
 from app.utils.logger import logger
 from fastapi import Depends, HTTPException, Request,status
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.core.auth import decode_access_token
 from app.utils.logger import logger
+from app.repository.user_repository import UserRepository
+from app.service.user_service import UserService
+from app.service.auth_service import AuthService
+from typing import List, Union
+from app.schemas.response import ErrorResponse
+#from app.core.handlers.http_handlers import http_exception_handler
+
+
+# UserRepository 의존성 주입을 위한 함수
+def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:
+    logger.info('get_user_repository 함수 호출됨')
+    return UserRepository(db)
+
+def get_auth_service(user_repository: UserRepository = Depends(get_user_repository)) -> AuthService:
+    return AuthService(user_repository)
+
+# UserService 의존성 주입을 위한 함수
+def get_user_service(user_repository: UserRepository = Depends(get_user_repository)) -> UserService:
+    logger.info('get_user_service 함수 호출됨')
+    return UserService(user_repository)
 
 # === 예외 ==========================================
-def get_http_exception_handler():
-    return http_exception_handler
+# 예외 핸들러 가져오기 함수
+##def get_http_exception_handler():
+##    logger.info('get_http_exception_handler 함수 호출됨')
+#    return http_exception_handler
+
 
 # === JWT =========================================
 # 현재 사용자 가져오기 함수

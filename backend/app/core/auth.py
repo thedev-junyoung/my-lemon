@@ -14,6 +14,7 @@ from app.models.refresh_token import RefreshToken
 import secrets
 import hmac
 from app.utils.logger import logger
+from app.core.exceptions import JWTTokenMissingException, JWTTokenExpiredException, JWTTokenInvalidException, UserNotFoundException
 
 # OAuth2 설정
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -88,28 +89,42 @@ def verify_jwt_token(token: str) -> Dict[str, Union[str, int]]:
 
 # 현재 사용자 가져오기 함수
 async def get_current_user(request: Request, db: Session = Depends(get_db)) -> UserModel:
-    logger.info('')
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+    logger.info('get_current_user 함수 호출됨')
+    
     token = request.cookies.get("access_token")
     if not token:
-        raise credentials_exception
+        logger.error("JWT가 존재하지 않습니다.")
+        raise JWTTokenMissingException()
 
-    # 쿠키에서 Bearer 문자열 제거
-    token = token.replace("Bearer ", "")
-    logger.warn(f'token:{token}')
-    payload = decode_access_token(token)
+    logger.warn(f'쿠키에서 가져온 토큰: {token}')
+    
+    try:
+        payload = decode_access_token(token)
+    except HTTPException as e:
+        if e.detail == "Token has expired":
+            logger.error("JWT가 만료되었습니다.")
+            raise JWTTokenExpiredException()
+        else:
+            logger.error("유효하지 않은 JWT입니다.")
+            raise JWTTokenInvalidException()
+
     if payload is None:
-        raise credentials_exception
+        logger.error("JWT 디코딩에 실패했습니다.")
+        raise JWTTokenInvalidException()
+
     email: str = payload.get("sub")
+    
     if email is None:
-        raise credentials_exception
+        logger.error("JWT에 유효한 이메일 정보가 없습니다.")
+        raise JWTTokenInvalidException()
+
     user = db.query(UserModel).filter(UserModel.email == email).first()
+    
     if user is None:
-        raise credentials_exception
+        logger.error(f"해당 이메일로 사용자를 찾을 수 없습니다: {email}")
+        raise UserNotFoundException(email)
+    
+    logger.info(f"사용자 확인됨: {user.email}")
     return user
 
 # 현재 활성 사용자 가져오기 함수
